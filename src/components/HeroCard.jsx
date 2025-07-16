@@ -1,4 +1,3 @@
-// src/components/HeroCard.jsx
 import React from "react";
 
 function HeroCard({ hero, isExpanded, onToggle }) {
@@ -32,7 +31,7 @@ function HeroCard({ hero, isExpanded, onToggle }) {
             <span className="text-yellow-400 text-sm font-semibold min-w-fit">
               ⚡ Création:
             </span>
-            <p className="text-gray-300 text-sm line-clamp-2">
+            <p className="text-gray-300 text-sm line-clamp-3">
               {hero.description.creation}
             </p>
           </div>
@@ -40,7 +39,7 @@ function HeroCard({ hero, isExpanded, onToggle }) {
             <span className="text-red-400 text-sm font-semibold min-w-fit">
               🎭 Identité:
             </span>
-            <p className="text-gray-300 text-sm line-clamp-1">
+            <p className="text-gray-300 text-sm line-clamp-3">
               {hero.description.identite}
             </p>
           </div>
@@ -48,7 +47,7 @@ function HeroCard({ hero, isExpanded, onToggle }) {
             <span className="text-purple-400 text-sm font-semibold min-w-fit">
               💪 Pouvoirs:
             </span>
-            <p className="text-gray-300 text-sm line-clamp-1">
+            <p className="text-gray-300 text-sm line-clamp-4">
               {hero.description.pouvoirs}
             </p>
           </div>

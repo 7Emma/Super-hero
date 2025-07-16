@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function HeroSection() {
   return (
@@ -24,12 +25,12 @@ function HeroSection() {
             Créez, personnalisez et partagez vos super-héros dans un univers
             sans limites
           </p>
-          <a
-            href="./Home.jsx"
+          <Link
+            to="/create"
             className="bg-gradient-to-r from-yellow-500 to-red-500 hover:from-yellow-600 hover:to-red-600 text-white font-bold py-4 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-yellow-500/25"
           >
             Commencer L'Aventure ⚡
-          </a>
+          </Link>
         </div>
       </div>
     </>

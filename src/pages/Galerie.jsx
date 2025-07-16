@@ -1,7 +1,8 @@
-// src/pages/HeroGallery.jsx
-import React, { useState } from 'react';
-import heros from '../data/Hero';
-import HeroCard from '../components/HeroCard';
+import React, { useState } from "react";
+import heros from "../data/Hero";
+import HeroCard from "../components/HeroCard";
+import { Link } from "react-router-dom";
+import HeroList from "./creation/HeroList";
 
 function HeroGallery() {
   const [expandedCard, setExpandedCard] = useState(null);
@@ -30,6 +31,8 @@ function HeroGallery() {
           ))}
         </div>
 
+        <HeroList />
+
         {/* Stats */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-6 text-center text-white">
@@ -44,6 +47,15 @@ function HeroGallery() {
             <div className="text-4xl font-bold mb-2">24/7</div>
             <div className="text-lg">Protection Active</div>
           </div>
+        </div>
+
+        <div className="flex justify-center mt-12 animate-fade-in-up">
+          <Link
+            to="/create"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+          >
+            🦸 Créer le vôtre
+          </Link>
         </div>
       </div>
 
@@ -65,8 +77,28 @@ function HeroGallery() {
           animation: fadeIn 0.5s ease-in-out;
         }
         @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(-10px); }
-          to { opacity: 1; transform: translateY(0); }
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .animate-fade-in-up {
+          animation: fadeInUp 0.8s ease-out both;
         }
       `}</style>
     </div>

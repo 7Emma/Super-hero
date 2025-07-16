@@ -3,11 +3,12 @@ import Footer from "./components/Footer";
 import Navbar from "./components/Header";
 import Home from "./pages/Home";
 import Galerie from "./pages/Galerie";
-import Create from "./pages/Create";
+import Create from "./pages/creation/Create";
+
+import { HeroProvider } from "./pages/HeroContext";
 
 function App() {
   return (
-    <div className="bg-primary">
       <Router>
         <Navbar />
         <Routes>
@@ -17,7 +18,6 @@ function App() {
         </Routes>
         <Footer />
       </Router>
-    </div>
   );
 }
 

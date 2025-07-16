@@ -54,7 +54,7 @@ src/
 1. **Clone le repo :**
 
 ```bash
-git clone https://github.com/ton-pseudo/manutech-superhero.git
+git clone https://github.com/manuphil/manutech-superhero.git
 cd manutech-superhero
 ```
 

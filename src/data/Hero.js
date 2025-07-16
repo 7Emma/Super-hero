@@ -1,9 +1,9 @@
-import Superman from '../assets/superman.jpg'
-import Batman from '../assets/batman.webp'
-import Woman from '../assets/woman.webp'
-import Spiderman from '../assets/spider-man.webp'
-import Iron from '../assets/iron.webp'
-import Black from '../assets/black-panther.jpg'
+import Superman from '../assets/images/superman.jpg'
+import Batman from '../assets/images/batman.webp'
+import Woman from '../assets/images/woman.webp'
+import Spiderman from '../assets/images/spider-man.webp'
+import Iron from '../assets/images/iron.webp'
+import Black from '../assets/images/black-panther.jpg'
 
 export const heros = [
   {
