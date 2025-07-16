@@ -4,6 +4,7 @@ const SERVER_URL = import.meta.env.VITE_SERVER_URL || "http://localhost:5000";
 // Fonction pour l'inscription de l'utilisateur
 export const registerUser = async (formData) => {
   try {
+    // Ajout du préfixe /api
     const res = await fetch(`${SERVER_URL}/api/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -19,6 +20,7 @@ export const registerUser = async (formData) => {
 // Fonction pour la connexion
 export const loginUser = async (formData) => {
   try {
+    // Ajout du préfixe /api
     const res = await fetch(`${SERVER_URL}/api/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -39,7 +41,7 @@ export const loginUser = async (formData) => {
 };
 
 // Fonction pour la création de héros
-export const createHero = async (formData) => {
+export const create = async (formData) => {
   try {
     const response = await fetch(`${SERVER_URL}/api/create-heroes`, {
       method: "POST",
@@ -68,9 +70,10 @@ export const createHero = async (formData) => {
   }
 };
 
-// --- Nouvelle fonction pour récupérer le profil utilisateur ---
+// Fonction pour récupérer le profil utilisateur
 export const fetchUserProfile = async (token) => {
   try {
+    // Ajout du préfixe /api
     const res = await fetch(`${SERVER_URL}/api/profile`, {
       method: "GET",
       headers: {
@@ -104,9 +107,10 @@ export const fetchUserProfile = async (token) => {
   }
 };
 
-// --- Nouvelle fonction pour récupérer la liste des héros ---
+// Fonction pour récupérer la liste des héros
 export const getHeroes = async () => {
   try {
+    // Ajout du préfixe /api
     const res = await fetch(`${SERVER_URL}/api/heroes`);
     const data = await res.json();
 
