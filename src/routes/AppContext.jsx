@@ -71,7 +71,7 @@ function AppContext() {
             }
           />
           <Route
-            path="/profile"
+            path="/api/profile"
             element={
               <ProtectedRoute>
                 <Profile />
