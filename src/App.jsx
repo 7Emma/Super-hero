@@ -1,23 +1,15 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Footer from "./components/Footer";
-import Navbar from "./components/Header";
-import Home from "./pages/Home";
-import Galerie from "./pages/Galerie";
-import Create from "./pages/creation/Create";
+import React from "react";
+import { AuthProvider } from "./contexts/AuthContext"; // Importez AuthProvider
+import AppContext from "./routes/AppContext"; // Importez votre composant de routes
 
-import { HeroProvider } from "./pages/HeroContext";
-
+// Composant App principal qui enveloppe toute l'application
 function App() {
   return (
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/galerie" element={<Galerie />} />
-          <Route path="/create" element={<Create />} />
-        </Routes>
-        <Footer />
-      </Router>
+    <AuthProvider>
+      {" "}
+      {/* AuthProvider doit envelopper tout ce qui a besoin du contexte d'auth */}
+      <AppContext /> {/* Votre composant de routes principal */}
+    </AuthProvider>
   );
 }
 

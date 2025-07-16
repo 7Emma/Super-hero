@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createHero } from "../api";
+import { createHero } from "../services/api";
 
 const useCreateHero = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -22,7 +22,7 @@ const useCreateHero = () => {
     }
 
     setIsLoading(false);
-    
+
     // On efface le message après 5 secondes pour un effet visuel
     setTimeout(() => setMessage(null), 5000);
 
