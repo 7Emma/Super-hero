@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
-import initialHerosData from "../../data/Hero";
-import HeroCard from "../../components/HeroCard";
-import { Link } from "react-router-dom";
-import { getHeroes } from "../../services/api";
+import initialHerosData from "../../data/Hero"; // Importe vos données JSON initiales
+import HeroCard from "../../components/HeroCard"; // Importe le composant HeroCard
+import { useNavigate } from "react-router-dom"; // Importe useNavigate pour la navigation
+import { getHeroes } from "../../services/api"; // Importe la fonction pour récupérer les héros du backend
+import { useLoading } from "../../contexts/LoadingContext"; // Importe le hook de chargement
 
 function Galerie() {
   const [heroes, setHeroes] = useState([]); // La liste combinée des héros (JSON + Backend)
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [expandedHeroId, setExpandedHeroId] = useState(null); // Gère l'expansion par ID
+
+  const navigate = useNavigate(); // Initialise useNavigate
+  const { startLoading, stopLoading } = useLoading(); // Récupère les fonctions de chargement
 
   useEffect(() => {
     const fetchAndCombineHeroes = async () => {
@@ -50,6 +54,14 @@ function Galerie() {
   const toggleExpanded = (id) => {
     // Utilise l'ID pour basculer l'expansion
     setExpandedHeroId(expandedHeroId === id ? null : id);
+  };
+
+  // Fonction pour gérer le clic sur le bouton "Créer le vôtre"
+  const handleCreateHeroClick = () => {
+    startLoading(); // Active le spinner de chargement
+    navigate("/create"); // Navigue vers la page de création
+    // Un petit délai pour s'assurer que le spinner est visible même si la navigation est très rapide
+    setTimeout(() => stopLoading(), 1000);
   };
 
   if (loading) {
@@ -133,8 +145,9 @@ function Galerie() {
         </div>
 
         <div className="flex justify-center mt-12">
-          <Link
-            to="/create"
+          {/* Bouton "Créer le vôtre" mis à jour */}
+          <button
+            onClick={handleCreateHeroClick}
             className="group relative inline-flex items-center gap-2 
                        bg-gradient-to-r from-red-500 to-red-700 
                        text-white px-8 py-4 rounded-full font-bold text-lg 
@@ -152,7 +165,7 @@ function Galerie() {
                                 transform -translate-x-full group-hover:translate-x-full 
                                 skew-x-12"
             />
-          </Link>
+          </button>
         </div>
       </div>
 

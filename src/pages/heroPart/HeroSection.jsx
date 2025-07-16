@@ -1,7 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // Importe useNavigate
+import { useLoading } from "../../contexts/LoadingContext"; // Importe le hook de chargement
 
 function HeroSection() {
+  const navigate = useNavigate();
+  const { startLoading, stopLoading } = useLoading();
+
+  const handleStartAdventureClick = () => {
+    startLoading(); // Active le spinner
+    navigate("/api/create"); // Navigue vers la page de création
+    // Le spinner sera désactivé par le GlobalLoadingSpinner lorsque la nouvelle page est rendue,
+    // ou par un setTimeout si la navigation est trop rapide pour un effet visuel.
+    setTimeout(() => stopLoading(), 1000);
+  };
   return (
     <>
       <div className="max-w-7xl mx-auto px-8 py-10">
@@ -26,10 +38,14 @@ function HeroSection() {
             sans limites
           </p>
           <Link
-            to="/create"
-            className="bg-gradient-to-r from-yellow-500 to-red-500 hover:from-yellow-600 hover:to-red-600 text-white font-bold py-4 px-8 rounded-full text-xl transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-yellow-500/25"
+            onClick={handleStartAdventureClick}
+            className="mt-8 inline-flex items-center gap-2 
+                     bg-gradient-to-r from-purple-600 to-indigo-700 
+                     text-white px-8 py-4 rounded-full font-bold text-lg 
+                     shadow-lg hover:shadow-xl transition-all duration-300 
+                     transform hover:scale-105 active:scale-95 animate-pulse-subtle"
           >
-            Commencer L'Aventure ⚡
+            ✨ Commencer l'aventure
           </Link>
         </div>
       </div>

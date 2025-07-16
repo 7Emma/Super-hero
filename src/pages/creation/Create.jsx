@@ -36,6 +36,14 @@ function Create() {
         [name]: value,
       }));
     }
+    // Effacer l'erreur pour ce champ quand l'utilisateur commence à taper
+    if (errors[name] || errors[name.split(".")[1]]) {
+      // Gère aussi les erreurs de description
+      const newErrors = { ...errors };
+      delete newErrors[name];
+      delete newErrors[name.split(".")[1]];
+      setErrors(newErrors);
+    }
   };
 
   const validateForm = () => {
@@ -105,8 +113,12 @@ function Create() {
     "w-full rounded-xl px-5 py-4 border-2 border-amber-300/50 focus:border-red-500 focus:ring-2 focus:ring-red-500/20 outline-none transition-all duration-300 bg-white/10 backdrop-blur-sm placeholder-amber-100/70 text-white font-medium shadow-lg hover:shadow-xl";
 
   const getInputClassesWithError = (fieldName) => {
+    // Gère les erreurs pour les champs directs et les champs de description
+    const errorKey = fieldName.includes("description.")
+      ? fieldName.split(".")[1]
+      : fieldName;
     const baseClasses = inputClasses;
-    const errorClasses = errors[fieldName]
+    const errorClasses = errors[errorKey]
       ? " border-red-500 bg-red-500/10"
       : "";
     return baseClasses + errorClasses;
@@ -128,7 +140,7 @@ function Create() {
       </div>
 
       <div className="relative z-10 p-8">
-        {/* Loading Landing */}
+        {/* Loading Landing (déjà présent) */}
         {isLoading && (
           <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
             <div className="text-center">
