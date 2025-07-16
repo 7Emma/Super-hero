@@ -10,6 +10,7 @@ import {
   UserCheck,
 } from "lucide-react"; // Icônes Lucide React
 import { registerUser } from "../../services/api"; // Importez votre fonction d'inscription API
+import { useLoading } from "../../contexts/LoadingContext"; // Importe le hook de chargement
 
 function Register() {
   const [form, setForm] = useState({
@@ -26,8 +27,10 @@ function Register() {
   const [messageType, setMessageType] = useState(""); // 'success' ou 'error'
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({}); // Pour la gestion des erreurs de validation
+
   const navigate = useNavigate(); // Initialisez le hook de navigation
+  const { startLoading, stopLoading } = useLoading(); // Récupère les fonctions de chargement
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -70,7 +73,6 @@ function Register() {
       const today = new Date();
       const age = today.getFullYear() - birthDate.getFullYear();
       if (age < 13) {
-        // Exemple d'âge minimum
         newErrors.birthDate = "Vous devez avoir au moins 13 ans";
       }
     }
@@ -103,6 +105,7 @@ function Register() {
       return;
     }
 
+    startLoading(); // Active le spinner avant l'appel API
     try {
       // Appel à la fonction d'inscription de votre service API
       const data = await registerUser(form);
@@ -114,37 +117,43 @@ function Register() {
         setMessageType("success");
         // Redirige vers la page de connexion après un court délai
         setTimeout(() => {
-          navigate("/login");
+          stopLoading(); // Désactive le spinner avant la redirection
+          navigate("/api/login"); // Corrigé: navigation vers /login
         }, 2000);
       } else {
         setMessage(
           data.message || "Une erreur est survenue lors de l'inscription."
         );
         setMessageType("error");
+        stopLoading(); // Désactive le spinner en cas d'erreur
       }
     } catch (error) {
       console.error("Erreur d'inscription:", error);
       setMessage("Erreur réseau ou serveur indisponible. Veuillez réessayer.");
       setMessageType("error");
+      stopLoading(); // Désactive le spinner en cas d'erreur réseau
     }
   };
 
   // Fonction pour naviguer vers la page de connexion
   const navigateToLogin = () => {
-    navigate("/login");
+    startLoading(); // Active le spinner avant de naviguer
+    navigate("/api/login"); // Corrigé: navigation vers /login
+    // Un petit délai pour s'assurer que le spinner est visible même si la navigation est très rapide
+    setTimeout(() => stopLoading(), 1000);
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white p-4">
       <div className="bg-white/10 backdrop-blur-lg p-8 rounded-3xl shadow-2xl max-w-lg w-full border border-white/20">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-amber-400 to-amber-600 rounded-full mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full mb-4">
             <UserCheck className="w-8 h-8 text-white" />
           </div>
-          <h2 className="text-4xl font-bold text-amber-200 drop-shadow-lg">
+          <h2 className="text-4xl font-bold text-emerald-200 drop-shadow-lg">
             Inscription
           </h2>
-          <p className="text-amber-100/70 mt-2">
+          <p className="text-emerald-100/70 mt-2">
             Créez votre compte pour commencer
           </p>
         </div>
@@ -162,21 +171,21 @@ function Register() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          {" "}
-          {/* Utilisez form pour le onSubmit */}
           {/* Nom et Prénom */}
           <div className="grid grid-cols-2 gap-4">
             <div>
               <div className="relative">
-                <User className="absolute left-3 top-3.5 h-5 w-5 text-amber-300/70" />
+                <User className="absolute left-3 top-3.5 h-5 w-5 text-emerald-300/70" />
                 <input
                   name="firstName"
                   placeholder="Prénom"
                   value={form.firstName}
                   onChange={handleChange}
                   className={`w-full pl-10 pr-4 py-3 rounded-xl bg-white/20 border ${
-                    errors.firstName ? "border-red-500" : "border-amber-300/50"
-                  } focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none text-white placeholder-amber-100/70 font-medium transition-all duration-300`}
+                    errors.firstName
+                      ? "border-red-500"
+                      : "border-emerald-300/50"
+                  } focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none text-white placeholder-emerald-100/70 font-medium transition-all duration-300`}
                 />
               </div>
               {errors.firstName && (
@@ -186,15 +195,15 @@ function Register() {
 
             <div>
               <div className="relative">
-                <User className="absolute left-3 top-3.5 h-5 w-5 text-amber-300/70" />
+                <User className="absolute left-3 top-3.5 h-5 w-5 text-emerald-300/70" />
                 <input
                   name="lastName"
                   placeholder="Nom"
                   value={form.lastName}
                   onChange={handleChange}
                   className={`w-full pl-10 pr-4 py-3 rounded-xl bg-white/20 border ${
-                    errors.lastName ? "border-red-500" : "border-amber-300/50"
-                  } focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none text-white placeholder-amber-100/70 font-medium transition-all duration-300`}
+                    errors.lastName ? "border-red-500" : "border-emerald-300/50"
+                  } focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none text-white placeholder-emerald-100/70 font-medium transition-all duration-300`}
                 />
               </div>
               {errors.lastName && (
@@ -205,15 +214,15 @@ function Register() {
           {/* Nom d'utilisateur */}
           <div>
             <div className="relative">
-              <UserCheck className="absolute left-3 top-3.5 h-5 w-5 text-amber-300/70" />
+              <UserCheck className="absolute left-3 top-3.5 h-5 w-5 text-emerald-300/70" />
               <input
                 name="username"
                 placeholder="Nom d'utilisateur"
                 value={form.username}
                 onChange={handleChange}
                 className={`w-full pl-10 pr-4 py-3 rounded-xl bg-white/20 border ${
-                  errors.username ? "border-red-500" : "border-amber-300/50"
-                } focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none text-white placeholder-amber-100/70 font-medium transition-all duration-300`}
+                  errors.username ? "border-red-500" : "border-emerald-300/50"
+                } focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none text-white placeholder-emerald-100/70 font-medium transition-all duration-300`}
               />
             </div>
             {errors.username && (
@@ -223,7 +232,7 @@ function Register() {
           {/* Email */}
           <div>
             <div className="relative">
-              <Mail className="absolute left-3 top-3.5 h-5 w-5 text-amber-300/70" />
+              <Mail className="absolute left-3 top-3.5 h-5 w-5 text-emerald-300/70" />
               <input
                 name="email"
                 type="email"
@@ -231,8 +240,8 @@ function Register() {
                 value={form.email}
                 onChange={handleChange}
                 className={`w-full pl-10 pr-4 py-3 rounded-xl bg-white/20 border ${
-                  errors.email ? "border-red-500" : "border-amber-300/50"
-                } focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none text-white placeholder-amber-100/70 font-medium transition-all duration-300`}
+                  errors.email ? "border-red-500" : "border-emerald-300/50"
+                } focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none text-white placeholder-emerald-100/70 font-medium transition-all duration-300`}
               />
             </div>
             {errors.email && (
@@ -242,7 +251,7 @@ function Register() {
           {/* Date de naissance */}
           <div>
             <div className="relative">
-              <Calendar className="absolute left-3 top-3.5 h-5 w-5 text-amber-300/70" />
+              <Calendar className="absolute left-3 top-3.5 h-5 w-5 text-emerald-300/70" />
               <input
                 name="birthDate"
                 type="date"
@@ -250,8 +259,8 @@ function Register() {
                 value={form.birthDate}
                 onChange={handleChange}
                 className={`w-full pl-10 pr-4 py-3 rounded-xl bg-white/20 border ${
-                  errors.birthDate ? "border-red-500" : "border-amber-300/50"
-                } focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none text-white font-medium transition-all duration-300`}
+                  errors.birthDate ? "border-red-500" : "border-emerald-300/50"
+                } focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none text-white font-medium transition-all duration-300`}
               />
             </div>
             {errors.birthDate && (
@@ -261,7 +270,7 @@ function Register() {
           {/* Mot de passe */}
           <div>
             <div className="relative">
-              <Lock className="absolute left-3 top-3.5 h-5 w-5 text-amber-300/70" />
+              <Lock className="absolute left-3 top-3.5 h-5 w-5 text-emerald-300/70" />
               <input
                 name="password"
                 type={showPassword ? "text" : "password"}
@@ -269,13 +278,13 @@ function Register() {
                 value={form.password}
                 onChange={handleChange}
                 className={`w-full pl-10 pr-12 py-3 rounded-xl bg-white/20 border ${
-                  errors.password ? "border-red-500" : "border-amber-300/50"
-                } focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none text-white placeholder-amber-100/70 font-medium transition-all duration-300`}
+                  errors.password ? "border-red-500" : "border-emerald-300/50"
+                } focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none text-white placeholder-emerald-100/70 font-medium transition-all duration-300`}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-3.5 text-amber-300/70 hover:text-amber-300 transition-colors"
+                className="absolute right-3 top-3.5 text-emerald-300/70 hover:text-emerald-300 transition-colors"
               >
                 {showPassword ? (
                   <EyeOff className="h-5 w-5" />
@@ -291,7 +300,7 @@ function Register() {
           {/* Confirmation mot de passe */}
           <div>
             <div className="relative">
-              <Lock className="absolute left-3 top-3.5 h-5 w-5 text-amber-300/70" />
+              <Lock className="absolute left-3 top-3.5 h-5 w-5 text-emerald-300/70" />
               <input
                 name="confirmPassword"
                 type={showConfirmPassword ? "text" : "password"}
@@ -301,13 +310,13 @@ function Register() {
                 className={`w-full pl-10 pr-12 py-3 rounded-xl bg-white/20 border ${
                   errors.confirmPassword
                     ? "border-red-500"
-                    : "border-amber-300/50"
-                } focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 outline-none text-white placeholder-amber-100/70 font-medium transition-all duration-300`}
+                    : "border-emerald-300/50"
+                } focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none text-white placeholder-emerald-100/70 font-medium transition-all duration-300`}
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-3.5 text-amber-300/70 hover:text-amber-300 transition-colors"
+                className="absolute right-3 top-3.5 text-emerald-300/70 hover:text-emerald-300 transition-colors"
               >
                 {showConfirmPassword ? (
                   <EyeOff className="h-5 w-5" />
@@ -324,18 +333,18 @@ function Register() {
           </div>
           <button
             type="submit" // Important: le type submit déclenche le onSubmit du form
-            className="w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95"
+            className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 active:scale-95"
           >
             S'inscrire
           </button>
         </form>
 
         <div className="mt-8 text-center">
-          <p className="text-amber-100/80 text-sm">
+          <p className="text-emerald-100/80 text-sm">
             Déjà un compte ?{" "}
             <button
               onClick={navigateToLogin}
-              className="text-amber-300 hover:text-amber-200 font-semibold hover:underline transition-colors"
+              className="text-blue-300 hover:text-blue-200 font-semibold hover:underline transition-colors"
             >
               Connectez-vous ici
             </button>

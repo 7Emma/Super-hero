@@ -57,7 +57,7 @@ function Navbar() {
               </li>
               <li>
                 <Link
-                  to="/profile"
+                  to="/api/profile"
                   className="text-white hover:text-yellow-400 transition-all duration-300 font-semibold text-lg hover:scale-110 transform relative group"
                 >
                   <User />

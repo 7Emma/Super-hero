@@ -1,17 +1,19 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Importez useNavigate
-import { Mail, Lock, Eye, EyeOff } from "lucide-react"; // Icônes Lucide React
-import { loginUser } from "../../services/api"; // Importez votre fonction de connexion API
-import { useAuth } from "../../contexts/AuthContext"; // Importez le hook d'authentification
+import { useNavigate } from "react-router-dom";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { loginUser } from "../../services/api";
+import { useAuth } from "../../contexts/AuthContext";
+import { useLoading } from "../../contexts/LoadingContext"; // Importe le hook de chargement
 
 function Login() {
-  const [form, setForm] = useState({ username: "", password: "" }); // Ou 'email' si c'est ce que votre backend attend
+  const [form, setForm] = useState({ username: "", password: "" });
   const [message, setMessage] = useState(null);
-  const [messageType, setMessageType] = useState(""); // 'success' ou 'error'
-  const [showPassword, setShowPassword] = useState(false); // Pour afficher/masquer le mot de passe
+  const [messageType, setMessageType] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
-  const { login } = useAuth(); // On récupère la fonction login du contexte d'authentification
-  const navigate = useNavigate(); // Initialisez le hook de navigation
+  const { login } = useAuth();
+  const { startLoading, stopLoading } = useLoading(); // Récupère les fonctions de chargement
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -19,10 +21,9 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage(null); // Réinitialise le message
+    setMessage(null);
     setMessageType("");
 
-    // Validation simple pour la connexion
     if (!form.username.trim() || !form.password.trim()) {
       setMessage(
         "Veuillez entrer votre nom d'utilisateur et votre mot de passe."
@@ -31,15 +32,17 @@ function Login() {
       return;
     }
 
+    startLoading(); // Active le spinner avant l'appel API
     try {
       const response = await loginUser(form);
 
       if (response.success) {
-        login(response.token); // Met à jour le token dans le contexte
+        login(response.token);
         setMessage("Connexion réussie ! Redirection vers le site...");
         setMessageType("success");
-        // Redirige vers la page d'accueil après un court délai
+        // Désactive le spinner avant la redirection après un court délai pour que le message soit visible
         setTimeout(() => {
+          stopLoading();
           navigate("/");
         }, 1500);
       } else {
@@ -48,15 +51,15 @@ function Login() {
             "Erreur de connexion. Veuillez vérifier vos identifiants."
         );
         setMessageType("error");
+        stopLoading(); // Désactive le spinner en cas d'erreur
         // Si le message indique que l'utilisateur n'est pas inscrit, redirige vers l'inscription
-        // Adaptez cette condition pour qu'elle corresponde exactement au message d'erreur de votre backend
         if (
           response.message &&
           (response.message.includes("utilisateur non trouvé") ||
             response.message.includes("identifiants incorrects"))
         ) {
           setTimeout(() => {
-            navigate("/register");
+            navigate("/api/register");
           }, 2000); // Laisse le temps à l'utilisateur de lire le message
         }
       }
@@ -64,11 +67,15 @@ function Login() {
       console.error("Erreur de connexion:", error);
       setMessage("Erreur réseau ou serveur indisponible. Veuillez réessayer.");
       setMessageType("error");
+      stopLoading(); // Désactive le spinner en cas d'erreur réseau
     }
   };
 
   const navigateToRegister = () => {
+    startLoading(); // Active le spinner avant de naviguer vers l'inscription
     navigate("/api/register");
+    // Un petit délai pour s'assurer que le spinner est visible même si la navigation est très rapide
+    setTimeout(() => stopLoading(), 1000);
   };
 
   return (
@@ -122,7 +129,7 @@ function Login() {
                 placeholder="Mot de passe"
                 value={form.password}
                 onChange={handleChange}
-                required // Corrigé: 'requiredMaint' -> 'required'
+                required
                 className="w-full pl-10 pr-12 py-3 rounded-xl bg-white/20 border border-emerald-300/50 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none text-white placeholder-emerald-100/70 font-medium transition-all duration-300"
               />
               <button
