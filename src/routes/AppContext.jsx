@@ -33,11 +33,11 @@ function AppContext() {
       <Routes>
         {/* Routes publiques (accessibles à tous) */}
         <Route
-          path="/login"
+          path="/api/login"
           element={isLoggedIn ? <Navigate to="/" replace /> : <Login />}
         />
         <Route
-          path="/register"
+          path="/api/register"
           element={isLoggedIn ? <Navigate to="/" replace /> : <Register />}
         />
         {/* Routes protégées (nécessitent d'être connecté) */}
@@ -58,7 +58,7 @@ function AppContext() {
           }
         />
         <Route
-          path="/create"
+          path="/api/create"
           element={
             <ProtectedRoute>
               <Create />

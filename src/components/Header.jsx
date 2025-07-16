@@ -40,7 +40,7 @@ function Navbar() {
               </li>
               <li>
                 <Link
-                  to="/create"
+                  to="/api/create"
                   className="text-white hover:text-yellow-400 transition-all duration-300 font-semibold text-lg hover:scale-110 transform relative group"
                 >
                   Créer
