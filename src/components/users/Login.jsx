@@ -68,7 +68,7 @@ function Login() {
   };
 
   const navigateToRegister = () => {
-    navigate("/register");
+    navigate("/api/register");
   };
 
   return (

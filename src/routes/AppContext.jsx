@@ -81,7 +81,7 @@ function AppContext() {
             isLoggedIn ? (
               <Navigate to="/" replace />
             ) : (
-              <Navigate to="/login" replace />
+              <Navigate to="/api/login" replace />
             )
           }
         />
