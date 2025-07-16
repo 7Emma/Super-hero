@@ -19,7 +19,7 @@ import { useAuth } from "../contexts/AuthContext";
 function ProtectedRoute({ children }) {
   const { isLoggedIn } = useAuth();
   if (!isLoggedIn) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/api/login" replace />;
   }
   return children;
 }
