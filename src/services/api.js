@@ -41,7 +41,7 @@ export const loginUser = async (formData) => {
 };
 
 // Fonction pour la création de héros
-export const create = async (formData) => {
+export const createHero = async (formData) => {
   try {
     const response = await fetch(`${SERVER_URL}/api/create-heroes`, {
       method: "POST",
