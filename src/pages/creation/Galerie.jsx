@@ -59,7 +59,7 @@ function Galerie() {
   // Fonction pour gérer le clic sur le bouton "Créer le vôtre"
   const handleCreateHeroClick = () => {
     startLoading(); // Active le spinner de chargement
-    navigate("/create"); // Navigue vers la page de création
+    navigate("/api/create"); // Navigue vers la page de création
     // Un petit délai pour s'assurer que le spinner est visible même si la navigation est très rapide
     setTimeout(() => stopLoading(), 1000);
   };

@@ -37,7 +37,7 @@ function HeroSection() {
             Créez, personnalisez et partagez vos super-héros dans un univers
             sans limites
           </p>
-          <Link
+          <button
             onClick={handleStartAdventureClick}
             className="mt-8 inline-flex items-center gap-2 
                      bg-gradient-to-r from-purple-600 to-indigo-700 
@@ -46,7 +46,7 @@ function HeroSection() {
                      transform hover:scale-105 active:scale-95 animate-pulse-subtle"
           >
             ✨ Commencer l'aventure
-          </Link>
+          </button>
         </div>
       </div>
     </>
