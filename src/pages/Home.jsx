@@ -1,7 +1,7 @@
 import React from "react";
 import initialHerosData from "../data/Hero"; // Importe vos données JSON initiales
-import FeaturedHeroSlider from "../pages/heroPart/FeaturedHeroSlider"; // Importe le composant de carrousel
-import HeroSection from "./heroPart/HeroSection"
+import FeaturedHeroSlider from "./heroPart/FeaturedHeroSlider"; // Importe le composant de carrousel
+import HeroSection from "./heroPart/HeroSection";
 
 function Home() {
   // Prend les 3 premiers héros de vos données initiales pour le carrousel
